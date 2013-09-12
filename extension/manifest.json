@@ -1,0 +1,11 @@
+{
+  "name": "Keyboard shortcuts for Google Moderator",
+  "version": "1",
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/moderator/*"],
+      "js": ["injected-script.js"]
+    }
+  ],
+  "manifest_version": 2
+}
