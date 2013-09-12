@@ -1,6 +1,7 @@
 {
-  "name": "Keyboard shortcuts for Google Moderator",
+  "name": "Keyboard Shortcuts for Google Moderator™",
   "version": "1",
+  "icons": { "128": "icon-128x128.png" },
   "content_scripts": [
     {
       "matches": ["https://www.google.com/moderator/*"],
