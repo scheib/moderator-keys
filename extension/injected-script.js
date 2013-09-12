@@ -33,10 +33,12 @@ var keydown = function(e) {
 
 var findTargets = function() {
   var buttons = document.querySelectorAll(".featured .gwt-ToggleButton");
-  var yesButton = buttons[0] || undefined;
-  var noButton = buttons[1] || undefined;
+  var yesButton = buttons[0];
+  var noButton = buttons[1];
+  var skipButton = document.querySelectorAll(".featured .goog-button-base")[0];
   keyStore["U+004A" /* j */] = yesButton;
   keyStore["U+004B" /* k */] = noButton;
+  keyStore["U+0020" /* space */] = skipButton;
 }
 
 var init = function() {
