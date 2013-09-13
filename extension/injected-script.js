@@ -1,6 +1,6 @@
 "use strict";
 
-var keyStore = {};
+var keyIdentifierToMouseEventTargetDict = {};
 var retryTimeForFindTargets = 10;
 
 var dispatchMouseEvent = function(target, typeString) {
@@ -10,13 +10,15 @@ var dispatchMouseEvent = function(target, typeString) {
 }
 
 var keydown = function(e) {
-  var target = keyStore[e.keyIdentifier];
-  if (target) {
-    dispatchMouseEvent(target, "mouseover");
-    dispatchMouseEvent(target, "mousedown");
-    dispatchMouseEvent(target, "click");
-    dispatchMouseEvent(target, "mouseup");
-    e.preventDefault();
+  if (e.target.nodeName === "BODY") {  // Do not interfere with text input.
+    var mouseEventTarget = keyIdentifierToMouseEventTargetDict[e.keyIdentifier];
+    if (mouseEventTarget) {
+      dispatchMouseEvent(mouseEventTarget, "mouseover");
+      dispatchMouseEvent(mouseEventTarget, "mousedown");
+      dispatchMouseEvent(mouseEventTarget, "click");
+      dispatchMouseEvent(mouseEventTarget, "mouseup");
+      e.preventDefault();
+    }
   }
 };
 
@@ -28,7 +30,7 @@ var insertHint = function (targetElement, hintText) {
 }
 
 var bindKeyToTargetAndAddHint = function (targetElement, keyIdentifier, hintText) {
-  keyStore[keyIdentifier] = targetElement;
+  keyIdentifierToMouseEventTargetDict[keyIdentifier] = targetElement;
   insertHint(targetElement, hintText);
 }
 
