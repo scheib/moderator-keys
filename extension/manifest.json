@@ -1,6 +1,6 @@
 {
   "name": "Keyboard Shortcuts for Google Moderator™",
-  "version": "1",
+  "version": "2",
   "description": "Adds keyboard support for Google Moderator.",
   "icons": { "128": "icon-128x128.png" },
   "content_scripts": [
