@@ -10,7 +10,7 @@ var dispatchMouseEvent = function(target, typeString) {
 }
 
 var keydown = function(e) {
-  if (e.target.nodeName === "BODY") {  // Do not interfere with text input.
+  if (e.target.nodeName !== "TEXTAREA") {  // Do not interfere with text input.
     var mouseEventTarget = keyIdentifierToMouseEventTargetDict[e.keyIdentifier];
     if (mouseEventTarget) {
       dispatchMouseEvent(mouseEventTarget, "mouseover");
