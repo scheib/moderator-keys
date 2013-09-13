@@ -1,0 +1,9 @@
+.hintText {
+  background-color: rgb(255, 215, 0);
+  border: 1px solid rgb(102, 102, 0);
+  padding: 0.1em;
+  position: absolute;
+  z-index: 1;
+
+  line-height: 1; /* override goog-button-base. */
+}
