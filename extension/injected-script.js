@@ -1,7 +1,6 @@
 "use strict";
 
 var keyIdentifierToMouseEventTargetDict = {};
-var retryTimeForFindTargets = 10;
 
 var dispatchMouseEvent = function(target, typeString) {
   var e = document.createEvent("MouseEvents");
@@ -23,15 +22,22 @@ var keydown = function(e) {
 };
 
 var insertHint = function (targetElement, hintText) {
-  var hintDiv = document.createElement("div");
-  hintDiv.classList.add("hintText");
-  hintDiv.innerText = hintText;
-  targetElement.insertBefore(hintDiv, targetElement.firstChild);
+  if (targetElement) {
+    var hintDiv = targetElement.querySelector(".hintText");
+    if (!hintDiv) {
+      hintDiv = document.createElement("div");
+      hintDiv.classList.add("hintText");
+    }
+    hintDiv.innerText = hintText;
+    targetElement.insertBefore(hintDiv, targetElement.firstChild);
+  }
 }
 
 var bindKeyToTargetAndAddHint = function (targetElement, keyIdentifier, hintText) {
-  keyIdentifierToMouseEventTargetDict[keyIdentifier] = targetElement;
-  insertHint(targetElement, hintText);
+  if (keyIdentifierToMouseEventTargetDict[keyIdentifier] != targetElement) {
+    keyIdentifierToMouseEventTargetDict[keyIdentifier] = targetElement;
+    insertHint(targetElement, hintText);
+  }
 }
 
 var findTargets = function() {
@@ -41,12 +47,6 @@ var findTargets = function() {
   console.assert(buttons[2] === undefined, "Expected only 2 buttons.");
   var skipButton = document.querySelectorAll(".featured .goog-button-base")[0];
 
-  if (!yesButton || !noButton || !skipButton) {
-    retryTimeForFindTargets = retryTimeForFindTargets * 2;
-    setTimeout(findTargets, retryTimeForFindTargets);
-    return;
-  }
-
   bindKeyToTargetAndAddHint(yesButton, "U+004A", "j");
   bindKeyToTargetAndAddHint(noButton, "U+004B", "k");
   bindKeyToTargetAndAddHint(skipButton, "U+0020", "space");
@@ -55,6 +55,10 @@ var findTargets = function() {
 var init = function() {
   document.body.addEventListener("keydown", keydown);
   findTargets();
+
+  // As page is updated, ensure we call findTargets in case they change.
+  var observer = new MutationObserver(findTargets);
+  observer.observe(document.body, { childList: true, subtree: true });
 }
 
 window.onload = init;
