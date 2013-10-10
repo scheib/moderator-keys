@@ -9,15 +9,20 @@ var dispatchMouseEvent = function(target, typeString) {
 }
 
 var keydown = function(e) {
-  if (e.target.nodeName !== "TEXTAREA") {  // Do not interfere with text input.
-    var mouseEventTarget = keyIdentifierToMouseEventTargetDict[e.keyIdentifier];
-    if (mouseEventTarget) {
-      dispatchMouseEvent(mouseEventTarget, "mouseover");
-      dispatchMouseEvent(mouseEventTarget, "mousedown");
-      dispatchMouseEvent(mouseEventTarget, "click");
-      dispatchMouseEvent(mouseEventTarget, "mouseup");
-      e.preventDefault();
-    }
+  // Do not interfere with user typing into input fields.
+  switch (e.target.nodeName) {
+    case "TEXTAREA":
+    case "INPUT":
+      return;
+  }
+
+  var mouseEventTarget = keyIdentifierToMouseEventTargetDict[e.keyIdentifier];
+  if (mouseEventTarget) {
+    dispatchMouseEvent(mouseEventTarget, "mouseover");
+    dispatchMouseEvent(mouseEventTarget, "mousedown");
+    dispatchMouseEvent(mouseEventTarget, "click");
+    dispatchMouseEvent(mouseEventTarget, "mouseup");
+    e.preventDefault();
   }
 };
 
